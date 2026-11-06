@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # 1. Base de Datos
+  db:
+    image: mysql:8.0
+    container_name: healthguard_db
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci # 👈 AGREGAR ESTA LÍNEA
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: healthguard_pro
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # 2. Microservicio de Autenticación
+  auth-service:
+    build: ./healthguard-services/auth-service
+    container_name: healthguard_auth
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:1234@db:3306/healthguard_pro
+      - JWT_SECRET_KEY=super_secreto_healthguard
+      - CORS_ORIGINS=http://localhost:5173,http://localhost
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5001:5001"
+
+  # 3. Microservicio Clínico
+  clinical-service:
+    build: ./healthguard-services/clinical-service
+    container_name: healthguard_clinical
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:1234@db:3306/healthguard_pro
+      - JWT_SECRET_KEY=super_secreto_healthguard
+      - CORS_ORIGINS=http://localhost:5173,http://localhost
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5002:5002"
+
+  # 4. API Gateway
+  api-gateway:
+    build: ./healthguard-services/api-gateway
+    container_name: healthguard_gateway
+    environment:
+      - AUTH_URL=http://auth-service:5001
+      - CLINICAL_URL=http://clinical-service:5002
+    depends_on:
+      - auth-service
+      - clinical-service
+    ports:
+      - "5000:5000"
+
+  # 5. Frontend React
+  frontend:
+    build: ./healthguard-frontend
+    container_name: healthguard_frontend
+    ports:
+      - "5173:80" # Mapea el puerto 80 del contenedor (Nginx) al 5173 de tu PC
+    depends_on:
+      - api-gateway
+
+volumes:
+  mysql_data:

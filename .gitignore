@@ -1,0 +1,29 @@
+# Node / React
+node_modules/
+dist/
+.vite/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+env/
+
+# Variables de entorno y secretos
+.env
+*.env
+
+# Archivos de prueba temporales
+resp.json
+login.json
+signo.json
+
+# Carpeta antigua (para no subir el proyecto viejo)
+PROYECTO MAESTRIA_REACT/
+
+# Sistema Operativo y Editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/  
