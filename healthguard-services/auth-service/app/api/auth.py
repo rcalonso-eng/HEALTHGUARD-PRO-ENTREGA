@@ -7,6 +7,7 @@ from flask_jwt_extended import (
 )
 from app.extensions import db
 from app.models import Usuario, RolDetalle, UsuarioRol
+from app.extensions import db, limiter
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -31,6 +32,7 @@ def _usuario_to_dict(u):
     }
 
 @auth_bp.route('/auth/login', methods=['POST'])
+@limiter.limit("5 per minute")
 def login():
     data = request.get_json(silent=True) or {}
     email = (data.get('email') or '').strip().lower()
