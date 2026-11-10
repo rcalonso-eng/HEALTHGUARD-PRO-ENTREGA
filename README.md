@@ -95,8 +95,12 @@ Ejecuta las 4 pruebas unitarias (Login exitoso, Login fallido, Bloqueo por inten
 Para ejecutar las pruebas localmente:
 
 bash
+
 cd healthguard-services/auth-service
 python -m pytest tests/ -v
+
+
+
 📂 Estructura del Proyecto
 text
 /
