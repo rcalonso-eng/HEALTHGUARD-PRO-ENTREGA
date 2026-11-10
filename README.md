@@ -1,45 +1,48 @@
- 	HealthGuard Pro es una plataforma web diseñada para la gestión clínica y el monitoreo de pacientes. El sistema ha evolucionado de un modelo monolítico a una Arquitectura de Microservicios, garantizando escalabilidad, seguridad y un despliegue automatizado.
+markdown
+# 🏥 HealthGuard Pro - Sistema de Monitoreo Médico
 
-🏗️ Arquitectura del Sistema
+**Proyecto Integrador - Maestría en Sistemas Computacionales**  
+*Instituto Tecnológico de Estudios Superiores de Zamora (ITESZ)*  
+*Materias: Arquitectura Orientada a Servicios / Lenguajes Web*
+
+HealthGuard Pro es una plataforma web diseñada para la gestión clínica y el monitoreo de pacientes. El sistema implementa una **Arquitectura de Microservicios**, garantizando escalabilidad, seguridad y un despliegue automatizado con Docker.
+
+---
+
+## 🏗️ Arquitectura del Sistema
+
 El proyecto está construido bajo los siguientes componentes:
 
-Frontend (React + Vite): Interfaz de usuario, implementando el patrón MVVM (Model-View-ViewModel) mediante el uso de Context API para el manejo del estado y Axios para el consumo de la API.
+1. **Frontend (React + Vite):** Interfaz de usuario implementando el patrón **MVVM** (Model-View-ViewModel) mediante el uso de `Context API` para el manejo del estado y Axios con interceptores para el consumo de la API.
+2. **API Gateway (Flask + HTTPX):** Punto de entrada único que recibe las peticiones del frontend y las enruta al microservicio correspondiente.
+3. **Auth Service (Flask):** Microservicio encargado de la identidad, autenticación (JWT), control de acceso basado en roles (RBAC) y Rate Limiting.
+4. **Clinical Service (Flask):** Microservicio central que gestiona pacientes, expedientes clínicos, signos vitales y alertas médicas.
+5. **Base de Datos (MySQL 8):** Almacenamiento relacional con integridad referencial (PK, FK, Checks), vistas y Procedimientos Almacenados para la auditoría automática.
+6. **Orquestación (Docker Compose):** Contenerización de todos los servicios para un despliegue con un solo comando.
 
-API Gateway (Flask + HTTPX): Punto de entrada único que recibe las peticiones del frontend y las enruta al microservicio correspondiente.
+### Diagrama de Flujo de Peticiones
 
-Auth Service (Flask): Microservicio encargado de la identidad, autenticación (JWT), control de acceso basado en roles (RBAC) y Rate Limiting.
-
-Clinical Service (Flask): Microservicio central que gestiona pacientes, expedientes clínicos, signos vitales y alertas médicas.
-
-Base de Datos (MySQL 8): Almacenamiento relacional con integridad referencial (PK, FK, Checks), vistas y Procedimientos Almacenados para la auditoría automática.
-
-Orquestación (Docker Compose): Contenerización de todos los servicios para un despliegue con un solo comando.
-
-Diagrama de Flujo de Peticiones
-
-
-
-
-
-
-
-
-
-
+```mermaid
+flowchart LR
+    A[React\n:5173] -->|HTTP| B(API Gateway\n:5000)
+    B -->|/api/auth| C(Auth Service\n:5001)
+    B -->|/api/*| D(Clinical Service\n:5002)
+    C -->|SQL| E[(MySQL\n:3306)]
+    D -->|SQL| E
 🛠️ Tecnologías Utilizadas
-Frontend: React 18, React Router DOM, Axios, Context API.
+Frontend: React 18, React Router DOM, Axios, Context API (MVVM).
 
 Backend: Python 3.11, Flask, SQLAlchemy, PyMySQL.
 
 Seguridad: JSON Web Tokens (JWT), Flask-JWT-Extended, Flask-Limiter (Rate Limit).
 
-Base de Datos: MySQL 8.0.
+Base de Datos: MySQL 8.0 (Scripts SQL y Procedimientos Almacenados).
 
-DevOps: Docker, Docker Compose, Nginx (para el frontend).
+DevOps: Docker, Docker Compose, Nginx (para servir el frontend).
 
 CI/CD: GitHub Actions (Pruebas automatizadas con Pytest).
 
-🚀 Guía de Instalación y Despliegue
+🚀 Guía de Instalación y Despliegue Local
 Prerrequisitos
 Tener instalado Docker Desktop.
 
@@ -54,21 +57,21 @@ Ejecuta el siguiente comando para construir y levantar todos los contenedores:
 
 bash
 docker-compose up -d --build
-Espera unos 30 segundos (mientras MySQL inicializa las tablas y los datos).
+Espera aproximadamente 30 segundos (mientras MySQL inicializa las tablas y ejecuta el script init.sql).
 
 Abre tu navegador y accede a:
 👉 http://localhost:5173
 
-Nota: El sistema ya incluye la carga inicial de datos (init.sql) con usuarios de prueba listos para usar.
+Nota: El sistema ya incluye la carga inicial de datos (db/init.sql) con usuarios de prueba listos para usar.
 
 🔐 Credenciales de Prueba
 Todas las cuentas tienen la contraseña: admin123
 
-Rol	Email	Acceso
-Administrador	admin@hospital.com	Acceso total (Usuarios, Auditoría, Pacientes)
-Médico	carlos.rodriguez@hospital.com	Pacientes, Signos, Historial
-Enfermero	ana.martinez@hospital.com	Signos, Alertas
-Paciente	juan.perez@email.com	Solo sus propios signos y alertas
+Rol	Email	Nivel de Acceso
+Administrador	admin@hospital.com	Acceso total (Usuarios, Auditoría, Pacientes, Configuración)
+Médico	carlos.rodriguez@hospital.com	Pacientes, Signos Vitales, Historial Clínico
+Enfermero	ana.martinez@hospital.com	Registro de Signos, Gestión de Alertas
+Paciente	juan.perez@email.com	Solo lectura de sus propios signos, historial y alertas
 🧪 Pruebas Automatizadas (CI/CD)
 El proyecto cuenta con un flujo de Integración Continua (CI) configurado en GitHub Actions (.github/workflows/ci.yml).
 
@@ -97,12 +100,14 @@ text
 │   └── clinical-service/ # Microservicio de Datos Clínicos
 ├── docker-compose.yml   # Orquestador de contenedores
 └── README.md
-📌 Funcionalidades Implementadas
+📌 Funcionalidades Destacadas
 ☑ Autenticación con JWT y Control de Acceso Basado en Roles (RBAC).
-☑ Rate Limiting para prevención de ataques de fuerza bruta.
-☑ CRUD completo de Pacientes (con validaciones).
+☑ Rate Limiting para prevención de ataques de fuerza bruta en el login.
+☑ CRUD completo de Pacientes (con validaciones y control de permisos).
 ☑ Registro y consulta de Signos Vitales mediante Procedimientos Almacenados.
-☑ Historial Clínico con generación de notificaciones urgentes.
-☑ Gestión de Usuarios y Cambio de Roles.
-☑ Módulo de "Mi Perfil" para el cambio de contraseña.
+☑ Historial Clínico con generación automática de notificaciones urgentes.
+☑ Módulo de Gestión de Usuarios y asignación de roles.
+☑ Módulo de "Mi Perfil" para el cambio de contraseña seguro.
 ☑ Bitácora de Auditoría (Logs de acciones del sistema).
+Desarrollado por: Ricardo Cesar Alonso Bravo.
+Fecha: Noviembre 2026.
