@@ -30,7 +30,7 @@ flowchart LR
     C -->|SQL| E[(MySQL\n:3306)]
     D -->|SQL| E
 ```
-
+```
 
 🛠️ Tecnologías Utilizadas
 Frontend: React 18, React Router DOM, Axios, Context API (MVVM).
