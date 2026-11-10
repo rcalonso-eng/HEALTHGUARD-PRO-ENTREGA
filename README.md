@@ -29,6 +29,8 @@ flowchart LR
     B -->|/api/*| D(Clinical Service\n:5002)
     C -->|SQL| E[(MySQL\n:3306)]
     D -->|SQL| E
+
+
 🛠️ Tecnologías Utilizadas
 Frontend: React 18, React Router DOM, Axios, Context API (MVVM).
 
@@ -41,6 +43,8 @@ Base de Datos: MySQL 8.0 (Scripts SQL y Procedimientos Almacenados).
 DevOps: Docker, Docker Compose, Nginx (para servir el frontend).
 
 CI/CD: GitHub Actions (Pruebas automatizadas con Pytest).
+
+
 
 🚀 Guía de Instalación y Despliegue Local
 Prerrequisitos
@@ -68,10 +72,15 @@ Nota: El sistema ya incluye la carga inicial de datos (db/init.sql) con usuarios
 Todas las cuentas tienen la contraseña: admin123
 
 Rol	Email	Nivel de Acceso
+
 Administrador	admin@hospital.com	Acceso total (Usuarios, Auditoría, Pacientes, Configuración)
+
 Médico	carlos.rodriguez@hospital.com	Pacientes, Signos Vitales, Historial Clínico
+
 Enfermero	ana.martinez@hospital.com	Registro de Signos, Gestión de Alertas
+
 Paciente	juan.perez@email.com	Solo lectura de sus propios signos, historial y alertas
+
 🧪 Pruebas Automatizadas (CI/CD)
 El proyecto cuenta con un flujo de Integración Continua (CI) configurado en GitHub Actions (.github/workflows/ci.yml).
 
@@ -100,6 +109,8 @@ text
 │   └── clinical-service/ # Microservicio de Datos Clínicos
 ├── docker-compose.yml   # Orquestador de contenedores
 └── README.md
+
+
 📌 Funcionalidades Destacadas
 ☑ Autenticación con JWT y Control de Acceso Basado en Roles (RBAC).
 ☑ Rate Limiting para prevención de ataques de fuerza bruta en el login.
@@ -109,5 +120,7 @@ text
 ☑ Módulo de Gestión de Usuarios y asignación de roles.
 ☑ Módulo de "Mi Perfil" para el cambio de contraseña seguro.
 ☑ Bitácora de Auditoría (Logs de acciones del sistema).
+
+
 Desarrollado por: Ricardo Cesar Alonso Bravo.
 Fecha: Noviembre 2026.
