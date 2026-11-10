@@ -127,4 +127,3 @@ text
 
 
 Desarrollado por: Ricardo Cesar Alonso Bravo.
-Fecha: Noviembre 2026.
