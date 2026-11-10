@@ -32,6 +32,7 @@ flowchart LR
 ```
 ```
 
+
 🛠️ Tecnologías Utilizadas
 Frontend: React 18, React Router DOM, Axios, Context API (MVVM).
 
@@ -48,7 +49,9 @@ CI/CD: GitHub Actions (Pruebas automatizadas con Pytest).
 
 
 🚀 Guía de Instalación y Despliegue Local
+
 Prerrequisitos
+
 Tener instalado Docker Desktop.
 
 Tener instalado Git (opcional, para clonar el repositorio).
@@ -64,10 +67,12 @@ bash
 docker-compose up -d --build
 Espera aproximadamente 30 segundos (mientras MySQL inicializa las tablas y ejecuta el script init.sql).
 
+
 Abre tu navegador y accede a:
 👉 http://localhost:5173
 
 Nota: El sistema ya incluye la carga inicial de datos (db/init.sql) con usuarios de prueba listos para usar.
+
 
 🔐 Credenciales de Prueba
 Todas las cuentas tienen la contraseña: admin123
@@ -81,6 +86,8 @@ Médico	carlos.rodriguez@hospital.com	Pacientes, Signos Vitales, Historial Clín
 Enfermero	ana.martinez@hospital.com	Registro de Signos, Gestión de Alertas
 
 Paciente	juan.perez@email.com	Solo lectura de sus propios signos, historial y alertas
+
+
 
 🧪 Pruebas Automatizadas (CI/CD)
 El proyecto cuenta con un flujo de Integración Continua (CI) configurado en GitHub Actions (.github/workflows/ci.yml).
