@@ -7,7 +7,7 @@ class Config:
         'mysql+pymysql://root:1234@127.0.0.1/healthguard_pro'
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'cambia-esta-clave-en-produccion')
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'esta-es-la-clave-secreta')
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=8)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=7)
     CORS_ORIGINS = os.getenv('CORS_ORIGINS', 'http://localhost:5173').split(',')

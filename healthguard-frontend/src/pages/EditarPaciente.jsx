@@ -8,6 +8,7 @@ export default function EditarPaciente() {
   
   const [form, setForm] = useState({
     nombre: '', 
+    email: '', // 👈 Agregamos el email
     telefono: '', 
     direccion: '', 
     codigo_postal: '', 
@@ -23,6 +24,7 @@ export default function EditarPaciente() {
       .then(({ data }) => {
         setForm({
           nombre: data.nombre || '',
+          email: data.email || '', // 👈 Cargamos el email
           telefono: data.telefono || '',
           direccion: data.direccion || '',
           codigo_postal: data.codigo_postal || '',
@@ -42,8 +44,18 @@ export default function EditarPaciente() {
     e.preventDefault();
     setError('');
     try {
-      const payload = { ...form };
-      if (!payload.password) delete payload.password; // Solo enviar si se escribió
+      // Armamos el payload sin el email (porque no se debe modificar)
+      const payload = {
+        nombre: form.nombre,
+        telefono: form.telefono,
+        direccion: form.direccion,
+        codigo_postal: form.codigo_postal,
+        genero: form.genero
+      };
+      
+      if (form.password) {
+        payload.password = form.password; // Solo enviar si se escribió
+      }
 
       await api.put(`/pacientes/${id}`, payload);
       navigate('/pacientes');
@@ -69,6 +81,12 @@ export default function EditarPaciente() {
               onChange={(e) => setForm({ ...form, nombre: e.target.value })} />
           </div>
 
+          {/* 👇 NUEVO CAMPO DE EMAIL BLOQUEADO 👇 */}
+          <div style={{ marginBottom: 12 }}>
+            <label style={{ display: 'block', fontWeight: 'bold' }}>Email (No editable):</label>
+            <input type="email" value={form.email} readOnly style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4, backgroundColor: '#f0f0f0', color: '#666' }} />
+          </div>
+
           <div style={{ marginBottom: 12 }}>
             <label style={{ display: 'block', fontWeight: 'bold' }}>Teléfono:</label>
             <input type="text" value={form.telefono} style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
@@ -83,7 +101,7 @@ export default function EditarPaciente() {
 
           <div style={{ marginBottom: 12 }}>
             <label style={{ display: 'block', fontWeight: 'bold' }}>Código Postal:</label>
-            <input type="text" value={form.codigo_postal} style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+            <input type="text" maxLength="10" value={form.codigo_postal} style={{ width: '100%', padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
               onChange={(e) => setForm({ ...form, codigo_postal: e.target.value })} />
           </div>
 

@@ -213,15 +213,15 @@ CREATE TABLE respaldos_fisicos (
 -- =============================================
 -- El hash de abajo corresponde exactamente a la contraseña 'admin123' usando pbkdf2:sha256
 INSERT INTO usuarios (nombre, email, password_hash, telefono, genero, estado) VALUES
-('Admin Principal', 'admin@hospital.com', 'pbkdf2:sha256:600000$o8pXW1V4$5b8f4d8e2c6a3d1b7f9a0e4c2b5d8f1a3c6e9b0d2f5a8c1e4b7d0f3a6c9e2b5d', '+1234567890', NULL, TRUE),
-('Admin Soporte', 'soporte@hospital.com', 'pbkdf2:sha256:600000$o8pXW1V4$5b8f4d8e2c6a3d1b7f9a0e4c2b5d8f1a3c6e9b0d2f5a8c1e4b7d0f3a6c9e2b5d', '+1234567891', NULL, TRUE),
-('Dr. Carlos Rodríguez', 'carlos.rodriguez@hospital.com', 'pbkdf2:sha256:600000$o8pXW1V4$5b8f4d8e2c6a3d1b7f9a0e4c2b5d8f1a3c6e9b0d2f5a8c1e4b7d0f3a6c9e2b5d', '+1234567892', 'M', TRUE),
-('Dra. María González', 'maria.gonzalez@hospital.com', 'pbkdf2:sha256:600000$o8pXW1V4$5b8f4d8e2c6a3d1b7f9a0e4c2b5d8f1a3c6e9b0d2f5a8c1e4b7d0f3a6c9e2b5d', '+1234567893', 'F', TRUE),
-('Dr. Roberto Silva', 'roberto.silva@hospital.com', 'pbkdf2:sha256:600000$o8pXW1V4$5b8f4d8e2c6a3d1b7f9a0e4c2b5d8f1a3c6e9b0d2f5a8c1e4b7d0f3a6c9e2b5d', '+1234567894', 'M', TRUE),
-('Enf. Ana Martínez', 'ana.martinez@hospital.com', 'pbkdf2:sha256:600000$o8pXW1V4$5b8f4d8e2c6a3d1b7f9a0e4c2b5d8f1a3c6e9b0d2f5a8c1e4b7d0f3a6c9e2b5d', '+1234567895', 'F', TRUE),
-('Enf. Luis Torres', 'luis.torres@hospital.com', 'pbkdf2:sha256:600000$o8pXW1V4$5b8f4d8e2c6a3d1b7f9a0e4c2b5d8f1a3c6e9b0d2f5a8c1e4b7d0f3a6c9e2b5d', '+1234567896', 'M', TRUE),
-('Paciente Juan Pérez', 'juan.perez@email.com', 'pbkdf2:sha256:600000$o8pXW1V4$5b8f4d8e2c6a3d1b7f9a0e4c2b5d8f1a3c6e9b0d2f5a8c1e4b7d0f3a6c9e2b5d', '+1234567898', 'M', TRUE),
-('Paciente Marta López', 'marta.lopez@email.com', 'pbkdf2:sha256:600000$o8pXW1V4$5b8f4d8e2c6a3d1b7f9a0e4c2b5d8f1a3c6e9b0d2f5a8c1e4b7d0f3a6c9e2b5d', '+1234567899', 'F', TRUE);
+('Admin Principal', 'admin@hospital.com', 'pbkdf2:sha256:600000$9c4XpWBNKYwONQV2$5f186f2fba534559485954ce0b9ad66f20159d16ac09312bcb3dc099e56b9b8c', '+1234567890', NULL, TRUE),
+('Admin Soporte', 'soporte@hospital.com', 'pbkdf2:sha256:600000$9c4XpWBNKYwONQV2$5f186f2fba534559485954ce0b9ad66f20159d16ac09312bcb3dc099e56b9b8c', '+1234567891', NULL, TRUE),
+('Dr. Carlos Rodríguez', 'carlos.rodriguez@hospital.com', 'pbkdf2:sha256:600000$9c4XpWBNKYwONQV2$5f186f2fba534559485954ce0b9ad66f20159d16ac09312bcb3dc099e56b9b8c', '+1234567892', 'M', TRUE),
+('Dra. María González', 'maria.gonzalez@hospital.com', 'pbkdf2:sha256:600000$9c4XpWBNKYwONQV2$5f186f2fba534559485954ce0b9ad66f20159d16ac09312bcb3dc099e56b9b8c', '+1234567893', 'F', TRUE),
+('Dr. Roberto Silva', 'roberto.silva@hospital.com', 'pbkdf2:sha256:600000$9c4XpWBNKYwONQV2$5f186f2fba534559485954ce0b9ad66f20159d16ac09312bcb3dc099e56b9b8c', '+1234567894', 'M', TRUE),
+('Enf. Ana Martínez', 'ana.martinez@hospital.com', 'pbkdf2:sha256:600000$9c4XpWBNKYwONQV2$5f186f2fba534559485954ce0b9ad66f20159d16ac09312bcb3dc099e56b9b8c', '+1234567895', 'F', TRUE),
+('Enf. Luis Torres', 'luis.torres@hospital.com', 'pbkdf2:sha256:600000$9c4XpWBNKYwONQV2$5f186f2fba534559485954ce0b9ad66f20159d16ac09312bcb3dc099e56b9b8c', '+1234567896', 'M', TRUE),
+('Paciente Juan Pérez', 'juan.perez@email.com', 'pbkdf2:sha256:600000$9c4XpWBNKYwONQV2$5f186f2fba534559485954ce0b9ad66f20159d16ac09312bcb3dc099e56b9b8c', '+1234567898', 'M', TRUE),
+('Paciente Marta López', 'marta.lopez@email.com', 'pbkdf2:sha256:600000$9c4XpWBNKYwONQV2$5f186f2fba534559485954ce0b9ad66f20159d16ac09312bcb3dc099e56b9b8c', '+1234567899', 'F', TRUE);
 
 INSERT INTO roles_detalle (nombre_rol, descripcion, nivel_permisos, puede_crear_usuarios, puede_eliminar_datos, puede_configurar_sistema, acceso_total, creado_por) VALUES
 ('administrador_sistema', 'Control total del sistema', 10, TRUE, TRUE, TRUE, TRUE, 1),

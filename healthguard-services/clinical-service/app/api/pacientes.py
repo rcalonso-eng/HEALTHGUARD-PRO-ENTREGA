@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.extensions import db
-from app.models import Usuario, RolDetalle, UsuarioRol
+from app.models import Usuario, RolDetalle, UsuarioRol,UmbralAlerta
 from app.utils.decorators import roles_required
 
 pacientes_bp = Blueprint('pacientes', __name__)
@@ -66,8 +66,9 @@ def crear_paciente():
         estado=True,
     )
     db.session.add(nuevo)
-    db.session.flush()
+    db.session.flush() # Genera el ID del usuario antes de hacer commit
 
+    # 1. Asignar el rol de paciente
     rol = RolDetalle.query.filter_by(nombre_rol='paciente').first()
     if rol:
         uid_admin = int(get_jwt_identity())
@@ -77,6 +78,31 @@ def crear_paciente():
             asignado_por=uid_admin,
             es_rol_principal=True,
         ))
+
+    # 2. 👇 INSERTAR UMBRALES POR DEFECTO AUTOMÁTICAMENTE 👇
+    if nuevo.usuario_id:
+        umbrales_default = [
+            ('glucosa', 70.00, 110.00, 50.00, 200.00),
+            ('presion_arterial', 90.00, 120.00, 60.00, 180.00),
+            ('frecuencia_cardiaca', 60.00, 100.00, 40.00, 150.00),
+            ('oxigenacion', 95.00, 100.00, 85.00, 100.00)
+        ]
+        
+        for tipo, min_norm, max_norm, min_crit, max_crit in umbrales_default:
+            nuevo_umbral = UmbralAlerta(
+                paciente_id=nuevo.usuario_id,
+                tipo_signo_vital=tipo,
+                minimo_normal=min_norm,
+                maximo_normal=max_norm,
+                minimo_critico=min_crit,
+                maximo_critico=max_crit,
+                configurado_por=uid_admin,
+                esta_activo=True
+            )
+            db.session.add(nuevo_umbral)
+    # 👆 FIN DEL BLOQUE DE UMBRALES 👆
+
+    # 3. Guardamos todo en la base de datos de una sola vez
     db.session.commit()
     return jsonify(_paciente_to_dict(nuevo)), 201
 

@@ -194,3 +194,18 @@ class Auditoria(db.Model):
     ip_address = Column(String(45))
     user_agent = Column(Text)
     nivel_severidad = Column(Enum('info', 'advertencia', 'error', 'critico'), default='info')
+    
+    
+    
+class UmbralAlerta(db.Model):
+    __tablename__ = 'umbrales_alertas'
+    umbral_id = Column(Integer, primary_key=True)
+    paciente_id = Column(Integer, ForeignKey('usuarios.usuario_id'), nullable=False)
+    tipo_signo_vital = Column(Enum('glucosa', 'presion_arterial', 'peso', 'frecuencia_cardiaca', 'oxigenacion'), nullable=False)
+    minimo_normal = Column(Numeric(8,2), nullable=False)
+    maximo_normal = Column(Numeric(8,2), nullable=False)
+    minimo_critico = Column(Numeric(8,2), nullable=False)
+    maximo_critico = Column(Numeric(8,2), nullable=False)
+    configurado_por = Column(Integer, ForeignKey('usuarios.usuario_id'), nullable=False)
+    fecha_configuracion = Column(DateTime, default=datetime.utcnow)
+    esta_activo = Column(Boolean, default=True)
