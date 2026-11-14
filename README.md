@@ -29,6 +29,8 @@ flowchart LR
     B -->|/api/*| D(Clinical Service\n:5002)
     C -->|SQL| E[(MySQL\n:3306)]
     D -->|SQL| E
+```
+```
     
 
 
