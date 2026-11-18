@@ -238,6 +238,19 @@ INSERT INTO usuario_roles (usuario_id, rol_id, asignado_por, es_rol_principal) V
 (1, 1, 1, TRUE), (2, 1, 1, TRUE), (3, 2, 1, TRUE), (4, 3, 1, TRUE), (5, 4, 1, TRUE),
 (6, 5, 1, TRUE), (7, 6, 1, TRUE), (8, 7, 1, TRUE), (9, 8, 1, TRUE);
 
+-- Insertar signos vitales de prueba
+INSERT INTO signos_vitales (paciente_id, glucosa, presion_sistolica, presion_diastolica, peso, frecuencia_cardiaca, oxigenacion, tipo_registro, observaciones) VALUES
+(8, 120.5, 120, 80, 75.5, 72, 98.5, 'manual', 'Registro inicial de prueba'),
+(9, 250.0, 140, 90, 82.0, 85, 95.0, 'manual', 'Paciente con glucosa alta');
+
+-- Insertar una alerta generada por esa glucosa alta
+INSERT INTO alertas (paciente_id, tipo_signo_vital, valor_registrado, nivel_urgencia, mensaje, estado) VALUES
+(9, 'glucosa', 250.0, 'critico', 'Paciente presenta hiperglucemia severa. Requiere atención inmediata.', 'activa');
+
+-- Insertar historial clínico
+INSERT INTO historial_clinico (paciente_id, tipo_entrada, titulo, descripcion, profesional_id) VALUES
+(8, 'diagnostico', 'Paciente estable', 'Signos vitales dentro de los parámetros normales.', 3);
+
 -- =============================================
 -- 4. LLAVES FORÁNEAS
 -- =============================================
@@ -263,7 +276,57 @@ ALTER TABLE respaldos_logicos ADD CONSTRAINT fk_resp_logicos_usuario FOREIGN KEY
 ALTER TABLE respaldos_fisicos ADD CONSTRAINT fk_resp_fisicos_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id);
 
 -- =============================================
--- 5. PROCEDIMIENTOS ALMACENADOS
+-- 5. VISTAS PARA CONSULTA DE DATOS ENTRE TABLAS
+-- =============================================
+
+-- Vista 1: Muestra el expediente resumido de los usuarios (Pacientes y Médicos)
+-- Junta la tabla usuarios, usuario_roles y roles_detalle
+CREATE OR REPLACE VIEW vista_expediente_pacientes AS
+SELECT 
+    u.usuario_id,
+    u.nombre AS nombre_completo,
+    u.email,
+    u.telefono,
+    r.nombre_rol AS rol_en_sistema
+FROM usuarios u
+JOIN usuario_roles ur ON u.usuario_id = ur.usuario_id
+JOIN roles_detalle r ON ur.rol_id = r.rol_id
+WHERE ur.es_rol_principal = TRUE
+ORDER BY u.nombre;
+
+-- Vista 2: Muestra el historial clínico con los nombres reales
+-- Junta el historial, el paciente y el profesional que lo atendió
+CREATE OR REPLACE VIEW vista_historial_completo AS
+SELECT 
+    h.historial_id,
+    p.nombre AS nombre_paciente,
+    prof.nombre AS medico_tratante,
+    h.tipo_entrada,
+    h.titulo,
+    h.fecha_creacion,
+    h.es_urgente
+FROM historial_clinico h
+JOIN usuarios p ON h.paciente_id = p.usuario_id
+JOIN usuarios prof ON h.profesional_id = prof.usuario_id;
+
+-- Vista 3: Muestra los signos vitales junto con el nombre del paciente
+-- Ideal para que el frontend no tenga que hacer cruces de datos
+CREATE OR REPLACE VIEW vista_signos_con_paciente AS
+SELECT 
+    s.signo_vital_id,
+    u.nombre AS nombre_paciente,
+    s.glucosa,
+    s.presion_sistolica,
+    s.presion_diastolica,
+    s.frecuencia_cardiaca,
+    s.oxigenacion,
+    s.fecha_registro
+FROM signos_vitales s
+JOIN usuarios u ON s.paciente_id = u.usuario_id;
+
+
+-- =============================================
+-- 6. PROCEDIMIENTOS ALMACENADOS
 -- =============================================
 DELIMITER //
 
@@ -281,5 +344,7 @@ BEGIN
     VALUES ('signos_vitales', 'INSERT', LAST_INSERT_ID(), p_usuario_id, 
         JSON_OBJECT('paciente_id', p_paciente_id, 'glucosa', p_glucosa, 'presion_sistolica', p_presion_sistolica, 'presion_diastolica', p_presion_diastolica, 'peso', p_peso, 'frecuencia_cardiaca', p_frecuencia_cardiaca, 'oxigenacion', p_oxigenacion), 'info');
 END //
+
+
 
 DELIMITER ;
