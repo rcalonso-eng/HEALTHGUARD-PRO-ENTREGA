@@ -106,7 +106,6 @@ text
 ├── docker-compose.yml   # Orquestador de contenedores
 └── README.md
 📌 Funcionalidades Destacadas
-<<<<<<< HEAD
 ☑ Autenticación con JWT y Control de Acceso Basado en Roles (RBAC).
 ☑ Rate Limiting para prevención de ataques de fuerza bruta en el login.
 ☑ CRUD completo de Pacientes (con validaciones y control de permisos).
@@ -117,7 +116,6 @@ text
 ☑ Bitácora de Auditoría (Logs de acciones del sistema).
 
 
-=======
 ☑ Dashboard Estadístico: Panel principal con tarjetas de resumen (Total de pacientes, Alertas activas).
 ☑ Autenticación y Seguridad: Login con JWT, Rate Limiting (5 intentos/min) y desbloqueo de cuentas por el administrador.
 ☑ Gestión de Usuarios: El administrador puede crear Médicos, Enfermeros y Pacientes asignándoles roles desde la interfaz, además de cambiar roles existentes.
@@ -126,5 +124,4 @@ text
 ☑ CRUD Completo: Gestión de Pacientes, Signos Vitales e Historial Clínico con validaciones de rangos.
 ☑ Auditoría: Bitácora de acciones críticas registradas automáticamente mediante Procedimientos Almacenados en MySQL.
 ☑ Vistas SQL: Implementación de 3 vistas para consultas complejas y desacoplamiento de la base de datos.
->>>>>>> arreglo-readme
 Desarrollado por: Ricardo Cesar Alonso Bravo.
