@@ -165,6 +165,7 @@ def listar_usuarios():
             "nombre": u.nombre,
             "email": u.email,
             "estado": u.estado,
+            "cuenta_bloqueada": u.cuenta_bloqueada,
             "rol": rol_principal
         })
     return jsonify(resultado), 200
@@ -211,3 +212,55 @@ def cambiar_rol(usuario_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+    
+    
+@auth_bp.route('/auth/usuarios', methods=['POST'])
+@jwt_required()
+def admin_crear_usuario():
+    from flask_jwt_extended import get_jwt
+    if get_jwt().get('rol') != 'administrador_sistema':
+        return jsonify({"error": "No autorizado"}), 403
+
+    data = request.get_json(silent=True) or {}
+    nombre = (data.get('nombre') or '').strip()
+    email = (data.get('email') or '').strip().lower()
+    password = data.get('password') or ''
+    rol_id = data.get('rol_id')
+
+    if not nombre or not email or not password or not rol_id:
+        return jsonify({"error": "Faltan campos obligatorios"}), 400
+    if Usuario.query.filter_by(email=email).first():
+        return jsonify({"error": "El email ya está registrado"}), 409
+
+    nuevo = Usuario(nombre=nombre, email=email, estado=True)
+    nuevo.password = password
+    db.session.add(nuevo)
+    db.session.flush() # Para obtener el ID
+
+    # Asignar el rol seleccionado
+    db.session.add(UsuarioRol(
+        usuario_id=nuevo.usuario_id,
+        rol_id=int(rol_id),
+        asignado_por=int(get_jwt_identity()),
+        es_rol_principal=True
+    ))
+    db.session.commit()
+    return jsonify({"mensaje": "Usuario creado exitosamente"}), 201
+
+@auth_bp.route('/auth/usuarios/<int:usuario_id>/desbloquear', methods=['PUT'])
+@jwt_required()
+def desbloquear_usuario(usuario_id):
+    from flask_jwt_extended import get_jwt
+    if get_jwt().get('rol') != 'administrador_sistema':
+        return jsonify({"error": "No autorizado"}), 403
+
+    usuario = Usuario.query.get(usuario_id)
+    if not usuario:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+    usuario.cuenta_bloqueada = False
+    usuario.intentos_login = 0
+    db.session.commit()
+    
+    return jsonify({"mensaje": "Cuenta desbloqueada exitosamente"}), 200

@@ -54,6 +54,7 @@ export default function App() {
               <Route path="/pacientes/:id/signos" element={<SignosPaciente />} />
               <Route path="/pacientes/editar/:id" element={<EditarPaciente />} />
               <Route path="/auditoria" element={<Auditoria />} /> {/* 👈 AGREGA ESTA LÍNEA */}
+               <Route path="/usuarios" element={<Usuarios />} />
             </Route>
           </Route>
 
