@@ -22,7 +22,7 @@ export default function HistorialPaciente() {
   const [entradas, setEntradas] = useState([]);
   const [form, setForm] = useState(FORM_INICIAL);
   const [error, setError] = useState('');
-  const [mostrarForm, setMostrarForm] = useState(false); // 👈 Estado para mostrar/ocultar el formulario
+  const [mostrarForm, setMostrarForm] = useState(false);
 
   async function cargar() {
     try {
@@ -45,7 +45,7 @@ export default function HistorialPaciente() {
     try {
       await api.post(`/pacientes/${pacienteId}/historial`, form);
       setForm(FORM_INICIAL);
-      setMostrarForm(false); // Ocultamos el formulario después de guardar
+      setMostrarForm(false);
       await cargar();
     } catch (e) {
       setError(e.response?.data?.error || 'Error creando entrada');
@@ -56,10 +56,11 @@ export default function HistorialPaciente() {
     <div>
       <Link to="/pacientes">← Volver a pacientes</Link>
       
+      {/* Encabezado con el botón de Imprimir */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
         <h1>Historial clínico {paciente ? `— ${paciente.nombre}` : ''}</h1>
-
-        {/* 👇 NUEVO BOTÓN DE IMPRIMIR 👇 */}
+        
+        {/* 👇 BOTÓN DE IMPRIMIR 👇 */}
         <button 
           onClick={() => window.print()} 
           style={{ padding: '10px 20px', background: '#34495e', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontWeight: 'bold' }}
@@ -67,26 +68,20 @@ export default function HistorialPaciente() {
           🖨️ Imprimir Expediente
         </button>
       </div>
-        
 
-
-
-        {/* Botón para abrir/cerrar el formulario */}
-        {puedeEscribir && (
-          <button 
-            onClick={() => setMostrarForm(!mostrarForm)}
-            style={{ padding: '10px 20px', background: mostrarForm ? '#e74c3c' : '#3498db', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontWeight: 'bold' }}
-          >
-            {mostrarForm ? 'Cancelar' : '+ Nueva Nota Médica'}
-          </button>
-        )}
-      </div>
+      {puedeEscribir && (
+        <button 
+          onClick={() => setMostrarForm(!mostrarForm)}
+          style={{ padding: '10px 20px', marginTop: 10, background: mostrarForm ? '#e74c3c' : '#3498db', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          {mostrarForm ? 'Cancelar' : '+ Nueva Nota Médica'}
+        </button>
+      )}
 
       {error && <p style={{ color: 'crimson', padding: 10, background: '#fadbd8', borderRadius: 4 }}>{error}</p>}
 
-      {/* El formulario solo se muestra si mostrarForm es true */}
       {puedeEscribir && mostrarForm && (
-        <form onSubmit={crear} style={{ background: '#fff', padding: 24, borderRadius: 8, marginBottom: 24, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+        <form onSubmit={crear} style={{ background: '#fff', padding: 24, borderRadius: 8, marginTop: 16, marginBottom: 24, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
           <h3 style={{ marginTop: 0 }}>Registrar Nota Médica</h3>
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
