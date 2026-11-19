@@ -58,7 +58,19 @@ export default function HistorialPaciente() {
       
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
         <h1>Historial clínico {paciente ? `— ${paciente.nombre}` : ''}</h1>
+
+        {/* 👇 NUEVO BOTÓN DE IMPRIMIR 👇 */}
+        <button 
+          onClick={() => window.print()} 
+          style={{ padding: '10px 20px', background: '#34495e', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          🖨️ Imprimir Expediente
+        </button>
+      </div>
         
+
+
+
         {/* Botón para abrir/cerrar el formulario */}
         {puedeEscribir && (
           <button 
