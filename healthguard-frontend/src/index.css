@@ -21,3 +21,32 @@ table { background: #fff; }
   background: #2c3e50;
   border-bottom: 2px solid #3498db;
 }
+
+/* Estilos para cuando se imprime el expediente */
+@media print {
+  /* Ocultar el menú de navegación, los botones, enlaces y pie de página */
+  header, button, a, footer {
+    display: none !important;
+  }
+  
+  /* Ajustar el fondo para que sea blanco y ahorrar tinta */
+  body {
+    background-color: #fff !important;
+  }
+
+  /* Hacer que las tablas se vean bien y ocupen todo el ancho */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+  
+  th, td {
+    border: 1px solid #000 !important;
+    padding: 8px !important;
+  }
+  
+  /* Ocultar el texto pequeño de "Imprimir Expediente" */
+  .btn-print {
+    display: none !important;
+  }
+}

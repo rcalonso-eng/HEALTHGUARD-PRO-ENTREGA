@@ -27,7 +27,7 @@ flowchart LR
     A[React\n:5173] -->|HTTP| B(API Gateway\n:5000)
     B -->|/api/auth| C(Auth Service\n:5001)
     B -->|/api/*| D(Clinical Service\n:5002)
-    C -->|SQL| E[(MySQL\n:3306)]
+    C -->|SQL| E[(MySQL\n:3307)]
     D -->|SQL| E
 ```
 ```

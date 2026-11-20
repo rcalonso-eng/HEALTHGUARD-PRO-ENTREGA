@@ -10,6 +10,7 @@ class TestConfig(Config):
     # Usamos SQLite en memoria para que no toque tu MySQL real
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     JWT_SECRET_KEY = 'test-secret-key'
+    RATELIMIT_ENABLED = False 
 
 @pytest.fixture
 def client():

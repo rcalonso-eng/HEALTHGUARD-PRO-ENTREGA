@@ -10,7 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: healthguard_pro
     ports:
-      - "3306:3306"
+      - "3307:3306" # El puerto 3307 en tu PC se conectará al 3306 del contenedor
     volumes:
       - mysql_data:/var/lib/mysql
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
